@@ -64,7 +64,7 @@ export interface FlowData {
   dstIp: string;
   srcPort: number;
   dstPort: number;
-  protocol: 'TCP' | 'UDP' | 'ICMP';
+  protocol: 'TCP' | 'UDP' | 'ICMP' | 'ESP';
   bytes: number;
   packets: number;
   asn: string; // Autonomous System

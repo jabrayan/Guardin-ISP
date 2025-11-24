@@ -1,0 +1,5 @@
+{
+  "name": "Copy of GuardianISP - AI & NetFlow Monitor",
+  "description": "Enterprise ISP monitoring system featuring AI diagnostics, FlowCool (NetFlow/IPFIX), ElasticSearch integration, and DDoS mitigation engine.",
+  "requestFramePermissions": []
+}

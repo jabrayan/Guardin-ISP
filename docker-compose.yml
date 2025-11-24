@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # --- Frontend (Guardian ISP UI) ---
+  frontend:
+    build: .
+    container_name: guardian-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - timescaledb
+      - elasticsearch
+
+  # --- Database (TimescaleDB based on Postgres 14) ---
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    container_name: guardian-db
+    restart: always
+    environment:
+      POSTGRES_USER: guardian
+      POSTGRES_PASSWORD: guardian_password_secure_123
+      POSTGRES_DB: guardian_isp
+    volumes:
+      - guardian_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # --- Cache & Queue (Redis) ---
+  redis:
+    image: redis:alpine
+    container_name: guardian-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # --- Search & Logs (ElasticSearch) ---
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    container_name: guardian-elastic
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - guardian_esdata:/usr/share/elasticsearch/data
+
+volumes:
+  guardian_pgdata:
+  guardian_esdata:
